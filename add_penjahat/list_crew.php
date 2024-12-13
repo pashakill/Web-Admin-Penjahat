@@ -53,7 +53,7 @@ $totalPages = ceil($totalData / $perPage);
                 </thead>
                 <tbody>
                     <?php
-                    $no = $offset + 1; // Menyelaraskan nomor urut dengan offset
+                    $no = $offset + 1; 
                     while ($row = $result->fetch_assoc()) {
                     ?>
                         <tr>
@@ -63,11 +63,8 @@ $totalPages = ceil($totalData / $perPage);
                             <td><?php echo $row['jabatan']; ?></td>
                             <td>
                                 <?php 
-                                // Mengambil data BLOB dari database
                                 $imageData = $row['image'];
-                                // Mengonversi BLOB menjadi base64
                                 $base64Image = base64_encode($imageData);
-                                // Menampilkan gambar dalam tag <img>
                                 echo '<img src="data:image/jpeg;base64,' . $base64Image . '" alt="Image" style="width:100px; height:100px;" />';
                                 ?>
                             </td>

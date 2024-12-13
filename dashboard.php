@@ -49,7 +49,7 @@ error_reporting(E_ALL);
                 </a>
                 <div id="collapseMasterData" class="collapse" aria-labelledby="headingMasterData" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" id="m_barang" href="#">Events List</a>
+                        <a class="collapse-item" id="m_event" href="#">Events List</a>
                     </div>
                 </div>
                 <div id="collapseMasterData" class="collapse" aria-labelledby="headingMasterData" data-parent="#accordionSidebar">
@@ -76,6 +76,11 @@ error_reporting(E_ALL);
                     <div id="headingUserData" class="collapse" aria-labelledby="headingUserData" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" id="m_listpenjahat" href="#">Penjahat Crew</a>
+                        </div>
+                    </div>
+                    <div id="headingUserData" class="collapse" aria-labelledby="headingUserData" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" id="m_page" href="#">Data Halaman</a>
                         </div>
                     </div>
             </li>
@@ -367,21 +372,34 @@ error_reporting(E_ALL);
 
 
         // Event klik pada m_barang
-        $("#m_barang").on("click", function (e) {
-            e.preventDefault(); // Mencegah reload halaman
-            loadBarang();
+        $("#m_event").on("click", function (e) {
+            e.preventDefault();
+            loadEvent();
         });
         $("#m_booking").on("click", function (e) {
-            e.preventDefault(); // Mencegah reload halaman
+            e.preventDefault();
             loadListBooking();
         });
         $("#m_listpenjahat").on("click", function (e) {
-            e.preventDefault(); // Mencegah reload halaman
+            e.preventDefault();
             loadListPenjahat();
         });
         $("#m_services").on("click", function (e) {
-            e.preventDefault(); // Mencegah reload halaman
+            e.preventDefault();
             loadListServices();
+        });
+
+        $("#m_page").on("click", function () {
+            $.ajax({
+                url: '/web-penjahat/details/details_page.php',
+                type: 'GET',
+                success: function (data) {
+                    $("#contentData").html(data);
+                },
+                error: function () {
+                    alert("Gagal memuat form tambah barang.");
+                }
+            });
         });
 
         
@@ -391,8 +409,8 @@ error_reporting(E_ALL);
             loadUser();
         });
         // Fungsi untuk memuat data barang
-        function loadBarang() {
-            const url = '/web-penjahat/barang/list.php';
+        function loadEvent() {
+            const url = '/web-penjahat/event/list_event.php';
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -408,7 +426,23 @@ error_reporting(E_ALL);
         }
 
         function loadListBooking() {
-            const url = '/web-penjahat/barang/list_booking.php';
+            const url = '/web-penjahat/booking/list_booking.php';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $("#contentData").html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading data:", error, "Status:", status, "XHR:", xhr);
+                    alert("Terjadi kesalahan saat memuat data.");
+                }
+        });
+            
+        }
+
+        function loadListService() {
+            const url = '/web-penjahat/add_service/list_service.php';
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -440,7 +474,7 @@ error_reporting(E_ALL);
         }
 
         function loadListServices() {
-            const url = '/web-penjahat/barang/list_services.php';
+            const url = '/web-penjahat/add_services/list_service.php';
             $.ajax({
                 url: url,
                 type: 'GET',

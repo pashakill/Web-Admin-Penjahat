@@ -19,7 +19,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $perPage;
 
 // Query untuk mengambil data dengan paging
-$query = "SELECT * FROM services LIMIT $perPage OFFSET $offset";
+$query = "SELECT * FROM booking_events LIMIT $perPage OFFSET $offset";
 $result = $conn->query($query);
 
 // Mengecek jika query berhasil
@@ -28,7 +28,7 @@ if (!$result) {
 }
 
 // Query untuk menghitung total jumlah data
-$totalResult = $conn->query("SELECT COUNT(*) AS total FROM services");
+$totalResult = $conn->query("SELECT COUNT(*) AS total FROM booking_events");
 $totalRow = $totalResult->fetch_assoc();
 $totalData = $totalRow['total'];
 
@@ -37,26 +37,25 @@ $totalPages = ceil($totalData / $perPage);
 ?>
 
 <div class="container-fluid">
-<h1 class="h3 mb-2 text-gray-800">List Services Penjahat</h1>
+<h1 class="h3 mb-2 text-gray-800">List Booking Events</h1>
 <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
     For more information about DataTables, please visit the <a target="_blank"
         href="https://datatables.net">official DataTables documentation</a>.</p>
 <div class="card shadow mb-4">
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">List Services Penjahat</h6>
+    <h6 class="m-0 font-weight-bold text-primary">List Booking Events</h6>
 </div>
     <div class="card-body">
-        <button class="btn btn-info btn-user" style="margin-bottom: 30px;" id="addBarang">Tambah</button>    
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>ID</th>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Image</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,9 +66,10 @@ $totalPages = ceil($totalData / $perPage);
                         <tr>
                             <td><?php echo $no++; ?></td>
                             <td><?php echo $row['id']; ?></td>
-                            <td><?php echo $row['category']; ?></td>
-                            <td><?php echo $row['description']; ?></td>
-                            <td><?php echo $row['image']; ?></td>
+                            <td><?php echo $row['nama']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['subject']; ?></td>
+                            <td><?php echo $row['message']; ?></td>
                             <td>
                                 <button class="btn btn-success btn-sm" id="editBarang" value="<?php echo $row['id']; ?>">Edit</button>
                                 <button class="btn btn-danger btn-sm" id="deleteBarang" value="<?php echo $row['id']; ?>">Delete</button>
@@ -148,7 +148,7 @@ $totalPages = ceil($totalData / $perPage);
     // Function to reload the Barang list after add/edit/delete
     function loadBarang() {
         $.ajax({
-            url: '/web-penjahat/barang/list.php',
+            url: '/web-penjahat/barang/list_booking.php',
             type: 'GET',
             success: function (data) {
                 $("#contentData").html(data);

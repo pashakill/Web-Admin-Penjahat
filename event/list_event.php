@@ -69,7 +69,13 @@ $totalPages = ceil($totalData / $perPage);
                             <td><?php echo $row['id']; ?></td>
                             <td><?php echo $row['category']; ?></td>
                             <td><?php echo $row['description']; ?></td>
-                            <td><?php echo $row['image']; ?></td>
+                            <td>
+                                <?php 
+                                $imageData = $row['image'];
+                                $base64Image = base64_encode($imageData);
+                                echo '<img src="data:image/jpeg;base64,' . $base64Image . '" alt="Image" style="width:100px; height:100px;" />';
+                                ?>
+                            </td>
                             <td>
                                 <button class="btn btn-success btn-sm" id="editBarang" value="<?php echo $row['id']; ?>">Edit</button>
                                 <button class="btn btn-danger btn-sm" id="deleteBarang" value="<?php echo $row['id']; ?>">Delete</button>
@@ -91,7 +97,7 @@ $totalPages = ceil($totalData / $perPage);
 <script>
     $("#addBarang").on("click", function () {
         $.ajax({
-            url: '/web-penjahat/barang/add.php',
+            url: '/web-penjahat/event/add_event_form.php',
             type: 'GET',
             success: function (data) {
                 $("#contentData").html(data);
@@ -105,7 +111,7 @@ $totalPages = ceil($totalData / $perPage);
     $("#dataTable").on("click", "#editBarang", function () {
         const id = $(this).val();
         $.ajax({
-            url: '/web-penjahat/barang/edit_form.php',
+            url: '/web-penjahat/event/edit_form.php',
             type: 'GET',
             data: { id: id },
             success: function (data) {
@@ -123,14 +129,14 @@ $totalPages = ceil($totalData / $perPage);
         if (id) { 
             if (confirm("Apakah Anda yakin ingin menghapus barang ini?")) {
                 $.ajax({
-                    url: '/web-penjahat/barang/delete.php',
+                    url: '/web-penjahat/event/delete.php',
                     type: 'POST',
                     data: { id: id },
                     success: function (response) {
                         const res = JSON.parse(response);
                         if (res.status === 'success') {
                             alert(res.message);
-                            loadBarang(); 
+                            loadEvent();
                         } else {
                             alert(res.message);
                         }
@@ -146,9 +152,9 @@ $totalPages = ceil($totalData / $perPage);
     });
 
     // Function to reload the Barang list after add/edit/delete
-    function loadBarang() {
+    function loadEvent() {
         $.ajax({
-            url: '/web-penjahat/barang/list.php',
+            url: '/web-penjahat/event/list_event.php',
             type: 'GET',
             success: function (data) {
                 $("#contentData").html(data);
