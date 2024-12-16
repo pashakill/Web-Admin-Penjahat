@@ -24,6 +24,8 @@
                     $data = [
                         'title' => '',
                         'deskripsi' => '',
+                        'subtitle' => '',
+                        'subdeskripsi' => '',
                         'phone_number' => '',
                         'address' => '',
                         'email' => '',
@@ -31,6 +33,7 @@
                         'facebook' => '',
                         'instagram' => '',
                         'linkedin' => '',
+                        'maps' => '',
                         'image' => ''
                     ];
                 }
@@ -41,17 +44,26 @@
                 ?>
 
                 <form id="editFormPenjahat" enctype="multipart/form-data">
+                    <input type="hidden" class="form-control" id="id" name="id" value="<?php echo isset($data['id']) ? htmlspecialchars($data['id']) : ''; ?>">
                     <div class="form-group">
-                        <label for="title">Judul Halaman</label>
-                        <input type="text" class="form-control" id="title" name="title" value="<?php echo htmlspecialchars($data['title']); ?>" required>
+                        <label for="titlePage">Judul Halaman</label>
+                        <input type="text" class="form-control" id="titlePage" name="title" value="<?php echo htmlspecialchars($data['title']); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="deskripsi">Deskripsi Halaman</label>
                         <textarea class="form-control" id="deskripsi" name="deskripsi" required><?php echo htmlspecialchars($data['deskripsi']); ?></textarea>
                     </div>
                     <div class="form-group">
+                        <label for="subtitle">Subtitle Halaman</label>
+                        <input type="text" class="form-control" id="subtitle" name="subtitle" value="<?php echo htmlspecialchars($data['subtitle']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subdeskripsi">Subtitle Deskripsi Halaman</label>
+                        <textarea class="form-control" id="subdeskripsi" name="subdeskripsi" required><?php echo htmlspecialchars($data['subdescription']); ?></textarea>
+                    </div>
+                    <div class="form-group">
                         <label for="notelp">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="notelp" name="phone_number" value="<?php echo htmlspecialchars($data['phone_number']); ?>" required>
+                        <input type="text" class="form-control" id="notelp" name="notelp" value="<?php echo htmlspecialchars($data['phone_number']); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="address">Alamat</label>
@@ -78,11 +90,22 @@
                         <input type="text" class="form-control" id="linkedin" name="linkedin" value="<?php echo htmlspecialchars($data['linkedin']); ?>" required>
                     </div>
                     <div class="form-group">
+                        <label for="maps">Google Maps</label>
+                        <input type="text" class="form-control" id="maps" name="maps" value="<?php echo htmlspecialchars($data['maps']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image_header">Unggah Gambar Header</label>
+                        <input type="file" class="form-control-file" id="image_header" name="image_header" accept="image/*">
+                        <?php if (!empty($data['image_header'])): ?>
+                            <img src="data:image/jpeg;base64,<?php echo $data['image_header']; ?>" alt="Current Image Header" style="max-width: 200px; margin-top: 10px;">
+                            <?php endif; ?>
+                    </div>
+                    <div class="form-group">
                         <label for="image">Unggah Gambar</label>
                         <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
                         <?php if (!empty($data['image'])): ?>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($data['image']); ?>" alt="Current Image" style="max-width: 200px; margin-top: 10px;">
-                        <?php endif; ?>
+                            <img src="data:image/jpeg;base64,<?php echo $data['image']; ?>" alt="Current Image" style="max-width: 200px; margin-top: 10px;">
+                            <?php endif; ?>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <button type="button" class="btn btn-secondary" id="cancel">Batal</button>
@@ -100,7 +123,7 @@
         const formData = new FormData(this);
 
         $.ajax({
-            url: '/path/to/update_script.php', // Ganti dengan path ke script PHP Anda
+            url: '/web-penjahat/details/add_details_page.php', // Ganti dengan path ke script PHP Anda
             type: 'POST',
             data: formData,
             processData: false,

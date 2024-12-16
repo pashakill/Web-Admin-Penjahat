@@ -4,8 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         // Membaca konten gambar dari file
         $imageData = file_get_contents($_FILES['image']['tmp_name']);
-        // Debug: Tampilkan ukuran file yang diterima
-        error_log("File size: " . $_FILES['image']['size']);
+        $imageBase64 = base64_encode($imageData);
     } else {
         // Debug: Menampilkan error jika upload gagal
         error_log("Gambar gagal diupload. Error: " . $_FILES['image']['error']);
@@ -37,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Persiapkan query untuk dieksekusi
     if ($stmt = $conn->prepare($query)) {
         // Binding gambar (binary) secara langsung
-        $stmt->bind_param("s", $imageData);
+        $stmt->bind_param("s", $imageBase64);
 
         // Eksekusi query
         if ($stmt->execute()) {

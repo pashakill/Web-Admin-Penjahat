@@ -1,9 +1,8 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Cek jika ada file gambar dan tidak ada error
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $imageData = file_get_contents($_FILES['image']['tmp_name']);
-        error_log("File size: " . $_FILES['image']['size']);
+        $imageBase64 = base64_encode($imageData);
     } else {
         error_log("Gambar gagal diupload. Error: " . $_FILES['image']['error']);
         echo json_encode(['status' => 'error', 'message' => 'Gambar gagal diupload.']);
@@ -20,9 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $query = "INSERT INTO services (title, description, image)
               VALUES ('$title', '$description', ?)";
     
-    // Persiapkan query untuk dieksekusi
     if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("s", $imageData);
+        $stmt->bind_param("s", $imageBase64);
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Data Penjahat berhasil disimpan.']);
